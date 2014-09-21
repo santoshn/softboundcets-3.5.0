@@ -8,6 +8,7 @@ else(WITH_POLLY)
   list(APPEND LLVM_IMPLICIT_PROJECT_IGNORE "${LLVM_MAIN_SRC_DIR}/tools/polly")
 endif(WITH_POLLY)
 
+add_llvm_tool_subdirectory(softboundcets)
 add_llvm_tool_subdirectory(opt)
 add_llvm_tool_subdirectory(llvm-as)
 add_llvm_tool_subdirectory(llvm-dis)

@@ -3618,6 +3618,18 @@ void Clang::ConstructJob(Compilation &C, const JobAction &JA,
     CmdArgs.push_back(Args.MakeArgString(Twine(StackProtectorLevel)));
   }
 
+  if(Args.getLastArg(options::OPT_fsoftboundcets)){
+    CmdArgs.push_back("-fsoftboundcets");
+  }
+
+  if(Args.getLastArg(options::OPT_fsoftboundmpx)){
+    CmdArgs.push_back("-fsoftboundmpx");
+  }
+
+  if(Args.getLastArg(options::OPT_fsoftboundcetsmpx)){
+    CmdArgs.push_back("-fsoftboundcetsmpx");
+  }
+
   // --param ssp-buffer-size=
   for (arg_iterator it = Args.filtered_begin(options::OPT__param),
        ie = Args.filtered_end(); it != ie; ++it) {

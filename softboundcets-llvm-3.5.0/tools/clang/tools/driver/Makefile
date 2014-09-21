@@ -33,7 +33,7 @@ endif
 
 LINK_COMPONENTS := $(TARGETS_TO_BUILD) asmparser bitreader bitwriter codegen \
                    instrumentation ipo irreader linker objcarcopts option \
-                   profiledata selectiondag
+                   profiledata selectiondag softboundcets
 USEDLIBS = clangFrontendTool.a clangFrontend.a clangDriver.a \
            clangSerialization.a clangCodeGen.a clangParse.a clangSema.a \
            clangRewriteFrontend.a clangRewrite.a

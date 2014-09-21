@@ -39,6 +39,18 @@
 #include "llvm/Transforms/ObjCARC.h"
 #include "llvm/Transforms/Scalar.h"
 #include <memory>
+
+#include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundCETS.h"
+#include "llvm/Transforms/SoftBoundCETS/SoftBoundCETSPass.h"
+#include "llvm/Transforms/SoftBoundCETS/FixByValAttributes.h"
+
+#include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundMPX.h"
+#include "llvm/Transforms/SoftBoundCETS/SoftBoundMPXPass.h"
+
+#include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundCETSMPX.h"
+#include "llvm/Transforms/SoftBoundCETS/SoftBoundCETSMPXPass.h"
+#include "llvm/IR/Dominators.h"
+
 using namespace clang;
 using namespace llvm;
 
@@ -217,6 +229,53 @@ static void addDataFlowSanitizerPass(const PassManagerBuilder &Builder,
   PM.add(createDataFlowSanitizerPass(CGOpts.SanitizerBlacklistFile));
 }
 
+static void addSoftBoundMPXPasses(const PassManagerBuilder &Builder, 
+				   PassManagerBase &PM) {
+  
+  const PassManagerBuilderWrapper &BuilderWrapper = 
+    static_cast<const PassManagerBuilderWrapper&>(Builder);
+  const CodeGenOptions &CGOpts = BuilderWrapper.getCGOpts();
+
+  //  PM.add(new DominatorTree());
+  PM.add(new LoopInfo());
+  PM.add(new FixByValAttributesPass());
+  PM.add(new InitializeSoftBoundMPX());
+  PM.add(new SoftBoundMPXPass(CGOpts.SanitizerBlacklistFile));
+}
+
+static void addSoftBoundCETSMPXPasses(const PassManagerBuilder &Builder, 
+				   PassManagerBase &PM) {
+  
+  const PassManagerBuilderWrapper &BuilderWrapper = 
+    static_cast<const PassManagerBuilderWrapper&>(Builder);
+  const CodeGenOptions &CGOpts = BuilderWrapper.getCGOpts();
+
+  //  PM.add(new DominatorTree());
+  PM.add(new LoopInfo());
+  PM.add(new FixByValAttributesPass());
+  //  PM.add(new InitializeSoftBoundCETSMPX());
+  //  PM.add(new SoftBoundCETSMPXPass(CGOpts.SanitizerBlacklistFile));
+
+}
+				  
+static void addSoftBoundCETSPasses(const PassManagerBuilder &Builder, 
+				   PassManagerBase &PM) {
+  
+  const PassManagerBuilderWrapper &BuilderWrapper = 
+    static_cast<const PassManagerBuilderWrapper&>(Builder);
+  const CodeGenOptions &CGOpts = BuilderWrapper.getCGOpts();
+
+  //  PM.add(new DominatorTree());
+  PM.add(new LoopInfo());
+  PM.add(new FixByValAttributesPass());
+  PM.add(new InitializeSoftBoundCETS());
+  PM.add(new DominatorTreeWrapperPass());
+  PM.add(new SoftBoundCETSPass(CGOpts.SanitizerBlacklistFile));
+
+}
+
+
+
 void EmitAssemblyHelper::CreatePasses() {
   unsigned OptLevel = CodeGenOpts.OptimizationLevel;
   CodeGenOptions::InliningMethod Inlining = CodeGenOpts.getInlining();
@@ -291,6 +350,28 @@ void EmitAssemblyHelper::CreatePasses() {
     PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
                            addDataFlowSanitizerPass);
   }
+
+  if (CodeGenOpts.SoftBoundCETS){
+    PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
+			   addSoftBoundCETSPasses);
+    PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
+			   addSoftBoundCETSPasses);
+  }
+
+  if (CodeGenOpts.SoftBoundMPX){
+    PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
+			   addSoftBoundMPXPasses);
+    PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
+			   addSoftBoundMPXPasses);
+  }
+
+  if (CodeGenOpts.SoftBoundCETSMPX){
+    PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
+			   addSoftBoundCETSMPXPasses);
+    PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
+			   addSoftBoundCETSMPXPasses);
+  }
+
 
   // Figure out TargetLibraryInfo.
   Triple TargetTriple(TheModule->getTargetTriple());

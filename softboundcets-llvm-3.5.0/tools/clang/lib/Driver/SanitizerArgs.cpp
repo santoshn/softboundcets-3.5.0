@@ -172,6 +172,15 @@ SanitizerArgs::SanitizerArgs(const ToolChain &TC,
 
 void SanitizerArgs::addArgs(const llvm::opt::ArgList &Args,
                             llvm::opt::ArgStringList &CmdArgs) const {
+
+  // The blacklist file is used by SoftBound; add it to the arguments even if
+  // no other sanitizers are enabled.
+  if(!BlacklistFile.empty()) {
+    SmallString<64> BlacklistOpt("-fsanitize-blacklist=");
+    BlacklistOpt += BlacklistFile;
+    CmdArgs.push_back(Args.MakeArgString(BlacklistOpt));
+  }
+
   if (!Kind)
     return;
   SmallString<256> SanitizeOpt("-fsanitize=");

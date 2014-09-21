@@ -482,6 +482,11 @@ static bool ParseCodeGenArgs(CodeGenOptions &Opts, ArgList &Args, InputKind IK,
       getLastArgIntValue(Args, OPT_fsanitize_memory_track_origins_EQ, 0, Diags);
   Opts.SanitizeUndefinedTrapOnError =
       Args.hasArg(OPT_fsanitize_undefined_trap_on_error);
+
+  Opts.SoftBoundCETS = Args.hasArg(OPT_fsoftboundcets);
+  Opts.SoftBoundCETSMPX = Args.hasArg(OPT_fsoftboundcetsmpx);
+  Opts.SoftBoundMPX = Args.hasArg(OPT_fsoftboundmpx);
+
   Opts.SSPBufferSize =
       getLastArgIntValue(Args, OPT_stack_protector_buffer_size, 8, Diags);
   Opts.StackRealignment = Args.hasArg(OPT_mstackrealign);
