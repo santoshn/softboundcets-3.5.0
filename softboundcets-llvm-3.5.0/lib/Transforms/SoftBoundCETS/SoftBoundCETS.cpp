@@ -3265,7 +3265,8 @@ SoftBoundCETSPass::addTemporalChecks(Instruction* load_store,
     if(given_constant)
       return;
   }
-  
+
+#if 0  
   if(!disable_temporal_check_opt){
     /* Find all uses of pointer operand, then check if it
      * dominates and if so, make a note in the map
@@ -3302,7 +3303,6 @@ SoftBoundCETSPass::addTemporalChecks(Instruction* load_store,
             continue;
           }
         }
-
 #if 0        
         if(m_dominator_tree->dominates(load_store, temp_inst)) {
           if(!FTCE_map.count(temp_inst)) {
@@ -3314,7 +3314,11 @@ SoftBoundCETSPass::addTemporalChecks(Instruction* load_store,
 
       } /* Iterating over uses ends */
     } /* TEMPORALBOUNDSCHECKOPT ends */
+
+
   }
+
+#endif
 
   Value* tmp_key = NULL;
   Value* tmp_lock = NULL;
@@ -3459,7 +3463,7 @@ void SoftBoundCETSPass::addDereferenceChecks(Function* func) {
 
   
 #if 0
-  m_dominator_tree = &getAnalysis<DominatorTreeWrapperPass>().getDomTree();
+
 #endif
 
   /* intra-procedural load dererference check elimination map */
@@ -5010,6 +5014,9 @@ bool SoftBoundCETSPass::runOnModule(Module& module) {
   spatial_safety = true;
   temporal_safety = true;
 
+#if 0
+  m_dominator_tree = &getAnalysis<DominatorTreeWrapperPass>().getDomTree();
+#endif
   
   //  TD = &getAnalysis<DataLayout>();
   //  TLI = &getAnalysis<TargetLibraryInfo>();

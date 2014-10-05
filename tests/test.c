@@ -4,7 +4,7 @@
 int main(int argc, char** argv){
 
   int arr[100];
-  int num, i;
+  int num, i, j;
 
   size_t result = 0;
 
@@ -16,8 +16,10 @@ int main(int argc, char** argv){
   scanf("%d", &num);
 
   
-  for(i = 0; i< num; i++){
-    result = result + arr[i];
+  for(j= 0; j< 10000000; j++){
+    for(i = 0; i< num; i++){
+      result = result + arr[i];
+    }
   }
  
   printf("the result is %zd\n", result);

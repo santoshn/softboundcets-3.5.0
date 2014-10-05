@@ -1255,6 +1255,7 @@ __WEAK_INLINE void __softboundcets_check_remove_from_free_map(size_t ptr_key, vo
 
     if(tag == 0) {
 #ifndef __NOSIM_CHECKS      
+      //      printf("free map does not have the key\n");
       __softboundcets_abort();
 #else
       break;
@@ -1269,6 +1270,7 @@ __WEAK_INLINE void __softboundcets_check_remove_from_free_map(size_t ptr_key, vo
     if(counter >= __SOFTBOUNDCETS_N_FREE_MAP_ENTRIES) {
       //      printf("free map out of entries\n");
 #ifndef __NOSIM_CHECKS
+      printf("free map out of entries\n");
       __softboundcets_abort();
 #else
       break;

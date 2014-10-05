@@ -493,8 +493,12 @@ class SoftBoundCETSPass: public ModulePass {
   const char* getPassName() const { return " SoftBoundCETSPass";}
 
 
-  void getAnalysisUsage(AnalysisUsage& au) const {
+  void getAnalysisUsage(AnalysisUsage& au) const override {
+
+#if 0
     au.addRequired<DominatorTreeWrapperPass>();
+#endif 
+
     au.addRequired<LoopInfo>();
     //    au.addRequired<DataLayout>();
     au.addRequired<TargetLibraryInfo>();

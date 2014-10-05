@@ -190,6 +190,7 @@ main (int argc, char ** argv)
     TargetLibraryInfo *TLI = new TargetLibraryInfo(Triple(M1.get()->getTargetTriple()));
     Passes.add(TLI);
     
+    Passes.add(new DominatorTreeWrapperPass());
     Passes.add(new InitializeSoftBoundCETS());
     Passes.add(new SoftBoundCETSPass());
   }
