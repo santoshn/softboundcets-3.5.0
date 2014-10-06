@@ -2085,12 +2085,14 @@ SoftBoundMPXPass::addLoadStoreChecks(Instruction* load_store,
           }
         }
         
+#if 0
         if(m_dominator_tree->dominates(load_store, temp_inst)) {
           if(!FDCE_map.count(temp_inst)) {
             FDCE_map[temp_inst] = true;
             continue;
           }                  
         }
+#endif
       } // Iterating over uses ends 
     } // BOUNDSCHECKOPT ends 
 
@@ -2166,7 +2168,10 @@ void SoftBoundMPXPass::addDereferenceChecks(Function* func) {
   if(func->isVarArg())
     return;
 
+#if 0
   m_dominator_tree = &getAnalysis<DominatorTreeWrapperPass>().getDomTree();
+
+#endif
 
   /* intra-procedural load dererference check elimination map */
   std::map<Value*, int> func_deref_check_elim_map;

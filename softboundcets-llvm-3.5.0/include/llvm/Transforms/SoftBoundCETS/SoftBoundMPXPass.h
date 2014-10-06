@@ -418,7 +418,7 @@ class SoftBoundMPXPass: public ModulePass {
   const char* getPassName() const { return " SoftBoundMPXPass";}
 
   void getAnalysisUsage(AnalysisUsage& au) const {
-    au.addRequired<DominatorTreeWrapperPass>();
+    //    au.addRequired<DominatorTreeWrapperPass>();
     au.addRequired<LoopInfo>();
     //    au.addRequired<DataLayout>();
     au.addRequired<TargetLibraryInfo>();
