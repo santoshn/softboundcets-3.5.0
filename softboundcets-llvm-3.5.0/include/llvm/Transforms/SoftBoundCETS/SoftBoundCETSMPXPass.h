@@ -43,8 +43,8 @@
 //===---------------------------------------------------------------------===//
 
 
-#ifndef SOFTBOUNDCETSPASS_H
-#define SOFTBOUNDCETSPASS_H
+#ifndef SOFTBOUNDCETSMPXPASS_H
+#define SOFTBOUNDCETSMPXPASS_H
 
 
 
@@ -480,17 +480,13 @@ class SoftBoundCETSMPXPass: public ModulePass {
  SoftBoundCETSMPXPass(StringRef BlacklistFile = "")
    : ModulePass(ID),
     BlacklistFile(BlacklistFile){
-    spatial_safety= true;
-    temporal_safety=true;
-#if 0
-    initializeSoftBoundCETSPass(*PassRegistry::getPassRegistry());
-#endif
+
   }
   const char* getPassName() const { return " SoftBoundCETSMPXPass";}
 
 
   void getAnalysisUsage(AnalysisUsage& au) const {
-    au.addRequired<DominatorTreeWrapperPass>();
+
     au.addRequired<LoopInfo>();
     //    au.addRequired<DataLayout>();
     au.addRequired<TargetLibraryInfo>();

@@ -253,8 +253,8 @@ static void addSoftBoundCETSMPXPasses(const PassManagerBuilder &Builder,
   //  PM.add(new DominatorTree());
   PM.add(new LoopInfo());
   PM.add(new FixByValAttributesPass());
-  //  PM.add(new InitializeSoftBoundCETSMPX());
-  //  PM.add(new SoftBoundCETSMPXPass(CGOpts.SanitizerBlacklistFile));
+  PM.add(new InitializeSoftBoundCETSMPX());
+  PM.add(new SoftBoundCETSMPXPass(CGOpts.SanitizerBlacklistFile));
 
 }
 				  
@@ -269,7 +269,6 @@ static void addSoftBoundCETSPasses(const PassManagerBuilder &Builder,
   PM.add(new LoopInfo());
   PM.add(new FixByValAttributesPass());
   PM.add(new InitializeSoftBoundCETS());
-  PM.add(new DominatorTreeWrapperPass());
   PM.add(new SoftBoundCETSPass(CGOpts.SanitizerBlacklistFile));
 
 }

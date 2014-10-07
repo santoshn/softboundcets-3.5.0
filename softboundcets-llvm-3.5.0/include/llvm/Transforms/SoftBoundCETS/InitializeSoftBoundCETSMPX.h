@@ -1,7 +1,7 @@
-// Prototype creator for SoftBoundPass
+// Prototype creator for SoftBoundCETSMPX Pass
 
-#ifndef INITIALIZE_SOFTBOUNDCETS_H
-#define INITIALIZE_SOFTBOUNDCETS_H
+#ifndef INITIALIZE_SOFTBOUNDCETSMPX_H
+#define INITIALIZE_SOFTBOUNDCETSMPX_H
 
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
@@ -17,10 +17,6 @@ using namespace llvm;
 
 class InitializeSoftBoundCETSMPX: public ModulePass {
 
- private:
-  bool spatial_safety;
-  bool temporal_safety;
-  
  public:
   bool runOnModule(Module &);
   static char ID;
@@ -30,8 +26,6 @@ class InitializeSoftBoundCETSMPX: public ModulePass {
   void constructShadowStackHandlers(Module &);
   void constructAuxillaryFunctionHandlers(Module &);
   InitializeSoftBoundCETSMPX(): ModulePass(ID){        
-    spatial_safety = true;
-    temporal_safety= true;
   }
   
   const char* getPassName() const { return "InitializeSoftBoundCETSMPX";}

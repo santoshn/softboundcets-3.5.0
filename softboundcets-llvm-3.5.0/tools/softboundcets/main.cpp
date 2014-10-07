@@ -77,6 +77,12 @@ using namespace llvm;
 #include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundCETS.h"
 #include "llvm/Transforms/SoftBoundCETS/SoftBoundCETSPass.h"
 
+#include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundMPX.h"
+#include "llvm/Transforms/SoftBoundCETS/SoftBoundMPXPass.h"
+
+#include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundCETSMPX.h"
+#include "llvm/Transforms/SoftBoundCETS/SoftBoundCETSMPXPass.h"
+
 #include "llvm/Transforms/SoftBoundCETS/FixByValAttributes.h"
 //#include "SoftBound/InstCountPass.h"
 
@@ -91,6 +97,17 @@ using namespace llvm;
 
 static cl::opt<std::string>
 InputFilename(cl::Positional, cl::desc("<input bitcode>"), cl::init("-"));
+
+static cl::opt<bool>
+softboundmpx ("softboundmpx",
+	      cl::init(false),
+	      cl::desc("Perfom SoftBound Instrumentation in MPX mode"));
+
+static cl::opt<bool>
+softboundcetsmpx ("softboundcetsmpx",
+		  cl::init(false),
+		  cl::desc("Perfom SoftBoundCETS Instrumentation in MPX mode"));
+
 
 static cl::opt<bool>
 XMMMode ("xmm_mode",
@@ -176,9 +193,11 @@ main (int argc, char ** argv)
   bool normal_mode = true;
 
   if(XMMMode || YMMMode|| strip_intrinsic_mode 
-     || fix_byval_attributes || llvm_stat_counter){
+     || fix_byval_attributes || llvm_stat_counter || softboundmpx || softboundcetsmpx){
     normal_mode = false;
   }
+
+
 
   if (normal_mode){
     
@@ -193,6 +212,18 @@ main (int argc, char ** argv)
     Passes.add(new DominatorTreeWrapperPass());
     Passes.add(new InitializeSoftBoundCETS());
     Passes.add(new SoftBoundCETSPass());
+  }
+
+  if (softboundmpx){
+    
+    Passes.add(new InitializeSoftBoundMPX());
+    Passes.add(new SoftBoundMPXPass());
+    
+  }
+
+  if (softboundcetsmpx){
+    Passes.add(new InitializeSoftBoundCETSMPX());
+    Passes.add(new SoftBoundCETSMPXPass());
   }
   
 #if 0
