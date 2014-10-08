@@ -152,7 +152,6 @@ void* __softboundcetsmpx_safe_malloc(size_t);
 void __softboundcetsmpx_safe_free(void*);
 
 void * __softboundcetsmpx_safe_mmap(void* addr, size_t length, int prot, int flags, int fd, off_t offset);
-__WEAK_INLINE void __softboundcetsmpx_allocation_secondary_trie_allocate(void* addr_of_ptr);
 __WEAK_INLINE void __softboundcetsmpx_add_to_free_map(size_t ptr_key, void* ptr) ;
 
 /******************************************************************************/

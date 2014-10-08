@@ -1559,7 +1559,6 @@ __WEAK_INLINE void* softboundcetsmpx_realloc(void* ptr, size_t size){
    printf("performing relloc, which can cause ptr=%p\n", ptr);
 #endif
    void* ret_ptr = realloc(ptr, size);
-   __softboundcetsmpx_allocation_secondary_trie_allocate(ret_ptr);
    size_t ptr_key = 1;
    void* ptr_lock = __softboundcetsmpx_global_lock;
 
