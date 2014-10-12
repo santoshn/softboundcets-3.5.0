@@ -1,4 +1,4 @@
-//=== softboundcets.c - Creates the main function for SoftBound+CETS MPX Runtime --*- C -*===// 
+//=== softboundcetsmpx.c - Creates the main function for SoftBound+CETS MPX Runtime --*- C -*===// 
 // Copyright (c) 2014 Santosh Nagarakatte, Milo M. K. Martin. All rights reserved.
 
 // Developed by: Santosh Nagarakatte,

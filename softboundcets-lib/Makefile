@@ -3,7 +3,7 @@ all: softboundcets_rt softboundmpx_rt softboundcetsmpx_rt
 SBCETS_MPX_FLAGS=-Wall -pedantic -O3 -D__SOFTBOUNDCETSMPX_SPATIAL_TEMPORAL
 
 MPX_FLAGS=-Wall -pedantic -O3 -D__SOFTBOUNDMPX_SPATIAL 
-CFLAGS=-Wall -pedantic  -D__SOFTBOUNDCETS_SPATIAL_TEMPORAL -O3 -fno-strict-aliasing
+CFLAGS=-Wall -pedantic  -O3 -D__SOFTBOUNDCETS_SPATIAL_TEMPORAL
 ARFLAGS=-rcs
 
 # If LLVM_GOLD is set, also build a library for use with LTO

@@ -101,6 +101,7 @@ typedef struct {
   void* bound;
   size_t key;
   void* lock;  
+ 
 
 #define __SOFTBOUNDCETS_METADATA_NUM_FIELDS 4
 
@@ -536,12 +537,14 @@ __softboundcets_spatial_load_dereference_check(void *base, void *bound,
                                                void *ptr, size_t size_of_type)
 {
 
+
   if ((ptr < base) || ((void*)((char*) ptr + size_of_type) > bound)) {
 
     __softboundcets_printf("In LDC, base=%zx, bound=%zx, ptr=%zx\n",
     			   base, bound, ptr);    
     __softboundcets_abort();
   }
+
 }
 
 
@@ -694,9 +697,6 @@ __softboundcets_memset_check(void* dest, size_t size,
                              void* dest_base, void* dest_bound, 
                              size_t dest_key, void* dest_lock){
 
-
-#ifndef __NOSIM_CHECKS
-
   if(size >= LONG_MAX)
     __softboundcets_abort();
 
@@ -706,8 +706,6 @@ __softboundcets_memset_check(void* dest, size_t size,
   if(dest_key != *((size_t*)(dest_lock))){
     __softboundcets_abort();
   }
-
-#endif
 
 }
 #else
@@ -997,6 +995,7 @@ __softboundcets_temporal_load_dereference_check(void* pointer_lock,
   }
 
 #endif
+
 
 
   size_t temp = *((size_t*)pointer_lock);

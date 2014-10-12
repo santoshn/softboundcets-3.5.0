@@ -327,9 +327,11 @@ __softboundmpx_spatial_load_dereference_check(void *base, void *bound,
                                                void *ptr, size_t size_of_type)
 {
 
+
   if ((ptr < base) || ((void*)((char*) ptr + size_of_type) > bound)) {
     __softboundmpx_abort();
   }
+
 }
 
 

@@ -56,9 +56,9 @@ typedef struct {
 
   void* base;
   void* bound;
-  void* ptr;
   size_t key;
   void* lock;
+  void* ptr;
 #define __SOFTBOUNDCETSMPX_METADATA_NUM_FIELDS 4
 
 #define __BASE_INDEX 0
@@ -431,6 +431,7 @@ __softboundcetsmpx_spatial_load_dereference_check(void *base, void *bound,
                                                void *ptr, size_t size_of_type)
 {
 
+
   if ((ptr < base) || ((void*)((char*) ptr + size_of_type) > bound)) {
 
     __softboundcetsmpx_printf("In LDC, base=%zx, bound=%zx, ptr=%zx\n",
@@ -438,6 +439,7 @@ __softboundcetsmpx_spatial_load_dereference_check(void *base, void *bound,
     __softboundcetsmpx_abort();
   }
 }
+
 
 
 __WEAK_INLINE void 
@@ -583,6 +585,8 @@ __METADATA_INLINE void __softboundcetsmpx_metadata_load(void* addr_of_ptr, void*
     stored_key = 1;
     stored_lock = __softboundcetsmpx_global_lock;
   }
+
+  //  printf("base=%p, bound=%p, key=%zx, lock=%p\n", stored_base, stored_bound, stored_key, stored_lock);
   
   *((void**) base) = stored_base;
   *((void**) bound) = stored_bound;

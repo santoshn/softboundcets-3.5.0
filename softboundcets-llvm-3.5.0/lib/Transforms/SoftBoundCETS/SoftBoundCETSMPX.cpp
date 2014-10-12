@@ -2474,9 +2474,11 @@ SoftBoundCETSMPXPass::addLoadStoreChecks(Instruction* load_store,
     
   assert(pointer_operand && "pointer operand null?");
 
+#if 0
   if(isStructOperand(pointer_operand)){
     return;
-  }    
+  }  
+#endif  
   
   // If it is a null pointer which is being loaded, then it must seg
   // fault, no dereference check here

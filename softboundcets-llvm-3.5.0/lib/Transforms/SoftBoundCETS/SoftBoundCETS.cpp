@@ -2721,45 +2721,6 @@ SoftBoundCETSPass::isStructOperand(Value* pointer_operand){
 }
 
 
-//
-// This Code is from SAFECode Project.
-// Function: createFaultBlock()
-//
-// Description:
-//  Create a basic block which will cause the program to terminate.
-//
-// Inputs: 
-// F - A pointer to a function to which a faulting basic block
-//  will be added.
-//
-static BasicBlock *
-createFaultBlock (Function * F) {
-  //
-  // Create the basic block.
-  //
-  BasicBlock * faultBB = BasicBlock::Create (F->getContext(), "fault", F);
-
-  //
-  // Terminate the basic block with an unreachable instruction.
-  //
-  Instruction * UI = new UnreachableInst (F->getContext(), faultBB);
-
-  //
-  // Add an instruction that will generate a trap.
-  //
-  LLVMContext & Context = F->getContext();
-  Module * M = F->getParent();
-
-  M->getOrInsertFunction("__softboundcets_dummy", Type::getVoidTy(Context), NULL);
-  CallInst::Create(M->getFunction("__softboundcets_dummy"), "", UI);
-  
-  M->getOrInsertFunction ("__softboundcets_abort", Type::getVoidTy (Context), NULL);
-  CallInst::Create (M->getFunction ("__softboundcets_abort"), "", UI);
-
-  return faultBB;
-}
-
-
 
 //
 //
@@ -4427,7 +4388,6 @@ void SoftBoundCETSPass::gatherBaseBoundPass1 (Function * func) {
   }
 
   getFunctionKeyLock(func, func_key, func_lock, func_xmm_key_lock);
-  m_faulting_block[func] =  createFaultBlock(func);
 
 #if 0
   if(temporal_safety){

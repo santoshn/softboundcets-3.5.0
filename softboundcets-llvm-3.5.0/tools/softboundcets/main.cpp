@@ -215,6 +215,10 @@ main (int argc, char ** argv)
   }
 
   if (softboundmpx){
+    const DataLayout * DL = M1.get()->getDataLayout();
+    if (DL)
+      Passes.add(new DataLayoutPass(M1.get()));
+
     
     Passes.add(new InitializeSoftBoundMPX());
     Passes.add(new SoftBoundMPXPass());
@@ -222,6 +226,10 @@ main (int argc, char ** argv)
   }
 
   if (softboundcetsmpx){
+    const DataLayout * DL = M1.get()->getDataLayout();
+    if (DL)
+      Passes.add(new DataLayoutPass(M1.get()));
+
     Passes.add(new InitializeSoftBoundCETSMPX());
     Passes.add(new SoftBoundCETSMPXPass());
   }
