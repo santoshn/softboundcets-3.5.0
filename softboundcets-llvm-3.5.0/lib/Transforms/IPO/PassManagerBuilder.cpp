@@ -121,10 +121,14 @@ void PassManagerBuilder::populateFunctionPassManager(FunctionPassManager &FPM) {
   addInitialAliasAnalysisPasses(FPM);
 
   FPM.add(createCFGSimplificationPass());
+
+  FPM.add(createPromoteMemoryToRegisterPass());
+#if 0
   if (UseNewSROA)
     FPM.add(createSROAPass());
   else
     FPM.add(createScalarReplAggregatesPass());
+#endif
   FPM.add(createEarlyCSEPass());
   FPM.add(createLowerExpectIntrinsicPass());
 }
@@ -178,12 +182,17 @@ void PassManagerBuilder::populateModulePassManager(PassManagerBase &MPM) {
   if (OptLevel > 2)
     MPM.add(createArgumentPromotionPass());   // Scalarize uninlined fn args
 
+
+#if 0
   // Start of function pass.
   // Break up aggregate allocas, using SSAUpdater.
   if (UseNewSROA)
     MPM.add(createSROAPass(/*RequiresDomTree*/ false));
   else
     MPM.add(createScalarReplAggregatesPass(-1, false));
+#endif
+  MPM.add(createPromoteMemoryToRegisterPass());
+
   MPM.add(createEarlyCSEPass());              // Catch trivial redundancies
   MPM.add(createJumpThreadingPass());         // Thread jumps.
   MPM.add(createCorrelatedValuePropagationPass()); // Propagate conditionals
@@ -337,11 +346,15 @@ void PassManagerBuilder::populateLTOPassManager(PassManagerBase &PM,
   addExtensionsToPM(EP_Peephole, PM);
   PM.add(createJumpThreadingPass());
 
+#if 0
   // Break up allocas
   if (UseNewSROA)
     PM.add(createSROAPass());
   else
     PM.add(createScalarReplAggregatesPass());
+#endif
+  
+  PM.add(createPromoteMemoryToRegisterPass());
 
   // Run a few AA driven optimizations here and now, to cleanup the code.
   PM.add(createFunctionAttrsPass()); // Add nocapture.

@@ -2148,6 +2148,10 @@ struct SLPVectorizer : public FunctionPass {
   DominatorTree *DT;
 
   bool runOnFunction(Function &F) override {
+    
+    // SoftBoundCETS: Hack introduced to prevent vectorization for now
+    return false;
+
     if (skipOptnoneFunction(F))
       return false;
 
