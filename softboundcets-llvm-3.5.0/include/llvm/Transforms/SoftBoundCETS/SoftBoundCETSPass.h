@@ -1,4 +1,4 @@
-//=== SoftBound/SoftBoundCETSPass.h - Definitions for the SoftBound/CETS --*- C++ -*===// 
+//=== SoftBoundCETS/SoftBoundCETSPass.h - Definitions for the SoftBound/CETS --*- C++ -*===// 
 // Copyright (c) 2014 Santosh Nagarakatte, Milo M. K. Martin. All rights reserved.
 //
 // Developed by: Santosh Nagarakatte, 

@@ -50,6 +50,7 @@
 #include "llvm/Transforms/SoftBoundCETS/InitializeSoftBoundCETSMPX.h"
 #include "llvm/Transforms/SoftBoundCETS/SoftBoundCETSMPXPass.h"
 #include "llvm/IR/Dominators.h"
+#include "llvm/Transforms/SoftBoundCETS/SpatialCheck.h"
 
 using namespace clang;
 using namespace llvm;
@@ -255,7 +256,7 @@ static void addSoftBoundCETSMPXPasses(const PassManagerBuilder &Builder,
   PM.add(new FixByValAttributesPass());
   PM.add(new InitializeSoftBoundCETSMPX());
   PM.add(new SoftBoundCETSMPXPass(CGOpts.SanitizerBlacklistFile));
-
+  PM.add(new SpatialCheckOpt());
 }
 				  
 static void addSoftBoundCETSPasses(const PassManagerBuilder &Builder, 
@@ -270,7 +271,8 @@ static void addSoftBoundCETSPasses(const PassManagerBuilder &Builder,
   PM.add(new FixByValAttributesPass());
   PM.add(new InitializeSoftBoundCETS());
   PM.add(new SoftBoundCETSPass(CGOpts.SanitizerBlacklistFile));
-
+  PM.add(new DominatorTreeWrapperPass());
+  PM.add(new SpatialCheckOpt());
 }
 
 

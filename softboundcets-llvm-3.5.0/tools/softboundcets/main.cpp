@@ -86,6 +86,8 @@ using namespace llvm;
 #include "llvm/Transforms/SoftBoundCETS/FixByValAttributes.h"
 //#include "SoftBound/InstCountPass.h"
 
+#include "llvm/Transforms/SoftBoundCETS/SpatialCheck.h"
+
 #include <memory>
 #include <algorithm>
 
@@ -133,6 +135,8 @@ static cl::opt<bool>
 llvm_stat_counter ("llvm_stat_counter",
 		   cl::init(false),
 		   cl::desc("Perform LLVM Stat Counter Instrumentation"));
+
+
 
 int
 main (int argc, char ** argv)
@@ -212,6 +216,7 @@ main (int argc, char ** argv)
     Passes.add(new DominatorTreeWrapperPass());
     Passes.add(new InitializeSoftBoundCETS());
     Passes.add(new SoftBoundCETSPass());
+    Passes.add(new SpatialCheckOpt());
   }
 
   if (softboundmpx){
