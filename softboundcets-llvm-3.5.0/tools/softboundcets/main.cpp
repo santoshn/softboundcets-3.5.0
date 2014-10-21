@@ -87,6 +87,7 @@ using namespace llvm;
 //#include "SoftBound/InstCountPass.h"
 
 #include "llvm/Transforms/SoftBoundCETS/SpatialCheck.h"
+#include "llvm/Transforms/SoftBoundCETS/ShadowStackOpt.h"
 
 #include <memory>
 #include <algorithm>
@@ -99,6 +100,12 @@ using namespace llvm;
 
 static cl::opt<std::string>
 InputFilename(cl::Positional, cl::desc("<input bitcode>"), cl::init("-"));
+
+static cl::opt<bool>
+shadowstackopt ("shadowstackopt",
+	      cl::init(false),
+	      cl::desc("Perfom Shadow Stack Optimization"));
+
 
 static cl::opt<bool>
 softboundmpx ("softboundmpx",
@@ -197,7 +204,7 @@ main (int argc, char ** argv)
   bool normal_mode = true;
 
   if(XMMMode || YMMMode|| strip_intrinsic_mode 
-     || fix_byval_attributes || llvm_stat_counter || softboundmpx || softboundcetsmpx){
+     || fix_byval_attributes || llvm_stat_counter || softboundmpx || softboundcetsmpx || shadowstackopt){
     normal_mode = false;
   }
 
@@ -217,6 +224,12 @@ main (int argc, char ** argv)
     Passes.add(new InitializeSoftBoundCETS());
     Passes.add(new SoftBoundCETSPass());
     Passes.add(new SpatialCheckOpt());
+    //    Passes.add(new ShadowStackOpt());
+  }
+
+  if(shadowstackopt){
+
+    Passes.add(new ShadowStackOpt());
   }
 
   if (softboundmpx){
